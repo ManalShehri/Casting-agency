@@ -5,6 +5,12 @@ import datetime
 db = SQLAlchemy()
 
 
+movieCharacters = db.Table('movieCharacters', db.Model.metadata,
+                           db.Column('movie_id', db.Integer, db.ForeignKey('Movie.id')),
+                           db.Column('actor_id', db.Integer, db.ForeignKey('Actor.id'))
+                           )
+
+
 class Movie(db.Model):
     __tablename__ = 'Movie'
 
@@ -17,6 +23,29 @@ class Movie(db.Model):
     image_link = db.Column(db.String(500))
     created_at = db.Column(db.DateTime, default = datetime.datetime.now)
     updated_at = db.Column(db.DateTime, onupdate = datetime.datetime.now)
+    actors = db.relationship('Actor', secondary=movieCharacters, back_populates="movies")
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def json(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'release_date': self.release_date,
+            'description': self.description,
+            'director': self.director,
+            'category': self.category,
+            'image_link': self.image_link,
+            'created_at': str(self.created_at.strftime("%Y-%m-%d %H:%M:%S")),
+            'updated_at': str(self.updated_at),
+            }
+
 
 class Actor(db.Model):
     __tablename__ = 'Actor'
@@ -29,3 +58,13 @@ class Actor(db.Model):
     image_link = db.Column(db.String(500))
     created_at = db.Column(db.DateTime, default = datetime.datetime.now)
     updated_at = db.Column(db.DateTime, onupdate = datetime.datetime.now)
+    movies = db.relationship("Movie",secondary=movieCharacters, back_populates="actors")
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
