@@ -37,13 +37,53 @@ def create_app(test_config=None):
 
   # DELETE an actor
   @app.route('/actors/<int:id>', methods=['DELETE'])
-  def delete_actor():
-    return 'test'
+  def delete_actor(id):
+    try:
+      actor = Actor.query.filter(Actor.id == id).one_or_none()
+   
+      if actor:
+          actor.delete_from_db()
+          return jsonify({
+          'success': True,
+          'Message': 'Actor deleted successfully'
+          })
+          
+      else:
+        return jsonify({
+              'success': False,
+              'message': 'Actor Not Found'
+            }), 404 
+            
+    except Exception as e:
+      return jsonify({
+          'success': False,
+          'Message': str(e),
+        }), 500
 
   # DELETE a movie
   @app.route('/movies/<int:id>', methods=['DELETE'])
-  def delete_movie():
-    return 'test'
+  def delete_movie(id):
+    try:
+      movie = Movie.query.filter(Movie.id == id).one_or_none()
+   
+      if movie:
+          movie.delete_from_db()
+          return jsonify({
+          'success': True,
+          'Message': 'Movie deleted successfully'
+          })
+          
+      else:
+        return jsonify({
+              'success': False,
+              'message': 'Movie Not Found'
+            }), 404 
+
+    except Exception as e:
+      return jsonify({
+          'success': False,
+          'Message': str(e),
+        }), 500
 
   # POST an actor
   @app.route('/actors/new', methods=['POST'])
