@@ -68,3 +68,14 @@ class Actor(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.age,
+            'gender': self.gender,
+            'bio': self.bio,
+            'image_link': self.image_link,
+            'created_at': str(self.created_at.strftime("%Y-%m-%d %H:%M:%S")),
+            'updated_at': str(self.updated_at),
+            }

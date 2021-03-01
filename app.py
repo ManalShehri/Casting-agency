@@ -48,7 +48,31 @@ def create_app(test_config=None):
   # POST an actor
   @app.route('/actors/new', methods=['POST'])
   def add_actor():
-    return 'test'
+    try:
+      data = request.get_json()
+
+      if data['name'] is not None:
+        
+        name = data['name']
+        new_actor = Actor(name=data['name'],age=data['age'],gender=data['gender'],bio=data['bio'],image_link=data['image_link']) 
+        new_actor.save_to_db()
+          
+        return jsonify({
+          'success': True,
+          'new_actor': new_actor.json(),
+        }), 200
+
+      else:
+        return jsonify({
+          'success': False,
+          'Message': 'Name should be provided',
+        }), 500
+
+    except Exception as e:
+      return jsonify({
+          'success': False,
+          'Message': str(e),
+        }), 500
 
   # POST a movie
   @app.route('/movies/new', methods=['POST'])
@@ -56,7 +80,7 @@ def create_app(test_config=None):
     try:
       data = request.get_json()
 
-      if data['title'] is None:
+      if data['title'] is not None:
         
         title = data['title']
         new_movie = Movie(title=data['title'],release_date=data['release_date'],description=data['description'],director=data['director'],category=data['category'],image_link=data['image_link']) 
@@ -76,19 +100,89 @@ def create_app(test_config=None):
     except Exception as e:
       return jsonify({
           'success': False,
-          'Message': str(e) + 'is missing!',
+          'Message': str(e),
         }), 500
 
 
   # PATCH an actor
   @app.route('/actors/<int:id>', methods=['PATCH'])
-  def edit_actor():
-    return 'test'
+  def edit_actor(id):
+    try:
+      data = request.get_json() 
+      actor = Actor.query.filter(Actor.id == id).one_or_none()
+     
+      if actor:
+          if 'name' in data:
+              actor.name = data['name']
+          if 'age' in data:
+              actor.age = data['age']
+          if 'gender' in data:
+              actor.gender = data['gender']
+          if 'bio' in data:
+              actor.bio = data['bio']
+          if 'image_link' in data:
+              actor.image_link = data['image_link']
+
+          actor.save_to_db()
+            
+          return jsonify({
+            'success': True,
+            'message': 'Actor updated successfully',
+            'actor': actor.json(),
+          }), 200
+
+      else:
+          return jsonify({
+            'success': False,
+            'message': 'Actor Not Found'
+          }), 404 
+
+    except Exception as e:
+      return jsonify({
+          'success': False,
+          'Message': str(e),
+        }), 500
 
   # PATCH a movie
   @app.route('/movies/<int:id>', methods=['PATCH'])
-  def edit_movie():
-    return 'test'
+  def edit_movie(id):
+    try:
+      data = request.get_json() 
+      movie = Movie.query.filter(Movie.id == id).one_or_none()
+     
+      if movie:
+          if 'title' in data:
+              movie.title = data['title']
+          if 'release_date' in data:
+              movie.release_date = data['release_date']
+          if 'description' in data:
+              movie.description = data['description']
+          if 'director' in data:
+              movie.director = data['director']
+          if 'category' in data:
+              movie.category = data['category']
+          if 'image_link' in data:
+              movie.image_link = data['image_link']
+
+          movie.save_to_db()
+            
+          return jsonify({
+            'success': True,
+            'message': 'Movie updated successfully',
+            'movie': movie.json(),
+          }), 200
+
+      else:
+          return jsonify({
+            'success': False,
+            'message': 'Movie Not Found'
+          }), 404 
+
+    except Exception as e:
+      return jsonify({
+          'success': False,
+          'Message': str(e),
+        }), 500
 
   return app
 
