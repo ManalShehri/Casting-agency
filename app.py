@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 import datetime
 from models import *
+from auth import *
 
 def create_app(test_config=None):
   # create and configure the app
@@ -21,7 +22,8 @@ def create_app(test_config=None):
 
   # GET all actors 
   @app.route('/actors', methods=['GET'])
-  def all_actors():
+  @requires_auth('get:actors')
+  def all_actors(token):
     return jsonify({
             'success': True,
             'actors':list(map(lambda x: x.json(), Actor.query.all())),
@@ -29,7 +31,8 @@ def create_app(test_config=None):
 
   # GET all movies
   @app.route('/movies', methods=['GET'])
-  def all_movies():
+  @requires_auth('get:movies')
+  def all_movies(token):
     return jsonify({
         'success': True,
         'movies': list(map(lambda x: x.json(), Movie.query.all())),
@@ -37,7 +40,8 @@ def create_app(test_config=None):
 
   # DELETE an actor
   @app.route('/actors/<int:id>', methods=['DELETE'])
-  def delete_actor(id):
+  @requires_auth('delete:actor')
+  def delete_actor(token,id):
     try:
       actor = Actor.query.filter(Actor.id == id).one_or_none()
    
@@ -62,7 +66,8 @@ def create_app(test_config=None):
 
   # DELETE a movie
   @app.route('/movies/<int:id>', methods=['DELETE'])
-  def delete_movie(id):
+  @requires_auth('delete:movie')
+  def delete_movie(token,id):
     try:
       movie = Movie.query.filter(Movie.id == id).one_or_none()
    
@@ -87,7 +92,8 @@ def create_app(test_config=None):
 
   # POST an actor
   @app.route('/actors/new', methods=['POST'])
-  def add_actor():
+  @requires_auth('post:actor')
+  def add_actor(token):
     try:
       data = request.get_json()
 
@@ -116,7 +122,8 @@ def create_app(test_config=None):
 
   # POST a movie
   @app.route('/movies/new', methods=['POST'])
-  def add_movie():
+  @requires_auth('post:movie')
+  def add_movie(token):
     try:
       data = request.get_json()
 
@@ -146,7 +153,8 @@ def create_app(test_config=None):
 
   # PATCH an actor
   @app.route('/actors/<int:id>', methods=['PATCH'])
-  def edit_actor(id):
+  @requires_auth('patch:actor')
+  def edit_actor(token,id):
     try:
       data = request.get_json() 
       actor = Actor.query.filter(Actor.id == id).one_or_none()
@@ -185,7 +193,8 @@ def create_app(test_config=None):
 
   # PATCH a movie
   @app.route('/movies/<int:id>', methods=['PATCH'])
-  def edit_movie(id):
+  @requires_auth('patch:movie')
+  def edit_movie(token,id):
     try:
       data = request.get_json() 
       movie = Movie.query.filter(Movie.id == id).one_or_none()
