@@ -1,9 +1,25 @@
+import os
 import json
 from flask import Flask 
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+
+DB_HOST = os.getenv('DB_HOST', 'localhost:5432')
+DB_USER = os.getenv('DB_USER', 'manal')
+DB_PASSWORD = os.getenv('DB_PASSWORD', '123456m')
+DB_NAME = os.getenv('DB_NAME', 'casting_agency')
+database_path = "postgres://{}:{}@{}/{}".format(
+    DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
+
 db = SQLAlchemy()
 
+
+def setup_db(app, database_path=database_path):
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    db.app = app
+    db.init_app(app)
+    db.create_all()
 
 movieCharacters = db.Table('movieCharacters', db.Model.metadata,
                            db.Column('movie_id', db.Integer, db.ForeignKey('Movie.id')),

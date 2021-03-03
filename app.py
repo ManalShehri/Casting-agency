@@ -10,9 +10,10 @@ from auth import *
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
-  app.config.from_object('config.DatabaseURI')
-  db = SQLAlchemy(app)
-  migrate = Migrate(app, db)
+  setup_db(app)
+  # app.config.from_object('config.DatabaseURI')
+  # db = SQLAlchemy(app)
+  # migrate = Migrate(app, db)
   CORS(app)
 
   @app.route('/test')
