@@ -11,10 +11,16 @@ def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
   setup_db(app)
-  # app.config.from_object('config.DatabaseURI')
-  # db = SQLAlchemy(app)
-  # migrate = Migrate(app, db)
   CORS(app)
+
+  # CORS Headers
+  @app.after_request
+  def after_request(response):
+      response.headers.add('Access-Control-Allow-Headers',
+                            'Content-Type,Authorization,true')
+      response.headers.add('Access-Control-Allow-Methods',
+                            'GET,PATCH,POST,DELETE,OPTIONS')
+      return response
 
   @app.route('/test')
   def index():
@@ -56,7 +62,7 @@ def create_app(test_config=None):
       else:
         return jsonify({
               'success': False,
-              'message': 'Actor Not Found'
+              'Message': 'Actor Not Found'
             }), 404 
             
     except Exception as e:
@@ -82,7 +88,7 @@ def create_app(test_config=None):
       else:
         return jsonify({
               'success': False,
-              'message': 'Movie Not Found'
+              'Message': 'Movie Not Found'
             }), 404 
 
     except Exception as e:
@@ -176,14 +182,14 @@ def create_app(test_config=None):
             
           return jsonify({
             'success': True,
-            'message': 'Actor updated successfully',
+            'Message': 'Actor updated successfully',
             'actor': actor.json(),
           }), 200
 
       else:
           return jsonify({
             'success': False,
-            'message': 'Actor Not Found'
+            'Message': 'Actor Not Found'
           }), 404 
 
     except Exception as e:
@@ -218,14 +224,14 @@ def create_app(test_config=None):
             
           return jsonify({
             'success': True,
-            'message': 'Movie updated successfully',
+            'Message': 'Movie updated successfully',
             'movie': movie.json(),
           }), 200
 
       else:
           return jsonify({
             'success': False,
-            'message': 'Movie Not Found'
+            'Message': 'Movie Not Found'
           }), 404 
 
     except Exception as e:
