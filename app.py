@@ -240,6 +240,47 @@ def create_app(test_config=None):
           'Message': str(e),
         }), 500
 
+  @app.errorhandler(400)
+  def bad_request(error):
+      return jsonify({
+            "success": False,
+            "error": 400,
+            "message": "Bad Request"
+        }), 400
+
+  @app.errorhandler(401)
+  def unauthorized(error):
+      return jsonify({
+            "success": False,
+            "error": 401,
+            "message": "Unauthorized"
+        }), 401
+
+  @app.errorhandler(404)
+  def not_found(error):
+      return jsonify({
+            "success": False,
+            "error": 404,
+            "message": "Not Found"
+        }), 404
+
+  @app.errorhandler(500)
+  def server_error(error):
+      return jsonify({
+            "success": False,
+            "error": 500,
+            "message": "Internal Server Error"
+        }), 500
+
+
+  @app.errorhandler(405)
+  def not_allowed(error):
+      return jsonify({
+            "success": False,
+            "error": 405,
+            "message": "Method Not Allowed"
+        }), 405
+
   return app
 
 APP = create_app()
