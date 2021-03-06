@@ -1,13 +1,14 @@
 import os
 import json
-from flask import Flask 
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 
-DB_HOST = os.getenv('DB_HOST', 'localhost:5432')
-DB_USER = os.getenv('DB_USER', 'manal')
-DB_PASSWORD = os.getenv('DB_PASSWORD', '123456m')
-DB_NAME = os.getenv('DB_NAME', 'casting_agency')
+DB_HOST = os.environ.get('DB_HOST')
+DB_USER = os.environ.get('DB_USER')
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+DB_NAME = os.environ.get('DB_NAME')
+
 database_path = "postgres://{}:{}@{}/{}".format(
     DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
 
@@ -21,9 +22,12 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     db.create_all()
 
+
 movieCharacters = db.Table('movieCharacters', db.Model.metadata,
-                           db.Column('movie_id', db.Integer, db.ForeignKey('Movie.id')),
-                           db.Column('actor_id', db.Integer, db.ForeignKey('Actor.id'))
+                           db.Column('movie_id', db.Integer,
+                                     db.ForeignKey('Movie.id')),
+                           db.Column('actor_id', db.Integer,
+                                     db.ForeignKey('Actor.id'))
                            )
 
 
@@ -37,9 +41,10 @@ class Movie(db.Model):
     director = db.Column(db.String(80))
     category = db.Column(db.ARRAY(db.String))
     image_link = db.Column(db.String(500))
-    created_at = db.Column(db.DateTime, default = datetime.datetime.now)
-    updated_at = db.Column(db.DateTime, onupdate = datetime.datetime.now)
-    actors = db.relationship('Actor', secondary=movieCharacters, back_populates="movies")
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.datetime.now)
+    actors = db.relationship(
+        'Actor', secondary=movieCharacters, back_populates="movies")
 
     def save_to_db(self):
         db.session.add(self)
@@ -60,7 +65,7 @@ class Movie(db.Model):
             'image_link': self.image_link,
             'created_at': str(self.created_at.strftime("%Y-%m-%d %H:%M:%S")),
             'updated_at': str(self.updated_at),
-            }
+        }
 
 
 class Actor(db.Model):
@@ -72,9 +77,10 @@ class Actor(db.Model):
     gender = db.Column(db.String(6))
     bio = db.Column(db.String(200))
     image_link = db.Column(db.String(500))
-    created_at = db.Column(db.DateTime, default = datetime.datetime.now)
-    updated_at = db.Column(db.DateTime, onupdate = datetime.datetime.now)
-    movies = db.relationship("Movie",secondary=movieCharacters, back_populates="actors")
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.datetime.now)
+    movies = db.relationship(
+        "Movie", secondary=movieCharacters, back_populates="actors")
 
     def save_to_db(self):
         db.session.add(self)
@@ -94,4 +100,4 @@ class Actor(db.Model):
             'image_link': self.image_link,
             'created_at': str(self.created_at.strftime("%Y-%m-%d %H:%M:%S")),
             'updated_at': str(self.updated_at),
-            }
+        }

@@ -1,6 +1,12 @@
 # Casting-agency
 
-he Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies. 
+The Casting Agency is th Udacity capstone project which models company that is responsible for creating movies and managing and assigning actors to those movies. It has three access roles as showen in below table. 
+
+Role  | Access permission
+------------- | -------------
+Casting Assistant  | - view actors and movies 
+Casting Director  | - All permissions a Casting Assistant has and… - Add or delete an actor from the database - Modify actors or movies
+Executive Producer  | - All permissions a Casting Director has and… -Add or delete a movie from the database
 
 
 ## Getting Started 
@@ -24,7 +30,7 @@ source env/bin/activate
 source env/Scripts/activate
 ```
 
-then run ``` pip install requirements.txt``` All required packages are included in the requirements file.
+then run ``` pip install -r requirements.txt ``` All required packages are included in the requirements file.
 
 
 To run the application run the following commands:
@@ -72,6 +78,7 @@ The API will return three error types when requests fail:
 
 General:
 - Returns a list of actors, success value
+- Authorized Roles: Casting Assistant,Casting Director,Executive Producer.
 
 Sample: ```curl http://127.0.0.1:8080/actors```
 
@@ -129,6 +136,7 @@ Sample: ```curl http://127.0.0.1:8080/actors```
 
 General:
 - Returns a list of movies, success value
+- Authorized Roles: Casting Assistant,Casting Director,Executive Producer.
 
 Sample: ```curl http://127.0.0.1:8080/movies```
 
@@ -171,6 +179,7 @@ Sample: ```curl http://127.0.0.1:8080/movies```
 
 General:
 - Deletes the actor of the given ID if it exists. Returns success value and message.
+- Authorized Roles: Casting Director,Executive Producer.
 
 Sample ```curl -X DELETE http://127.0.0.1:8080/actors/1 ```
 
@@ -186,6 +195,7 @@ Sample ```curl -X DELETE http://127.0.0.1:8080/actors/1 ```
 
 General:
 - Deletes the movie of the given ID if it exists. Returns success value and message.
+- Authorized Role: Executive Producer.
 
 Sample ```curl -X DELETE http://127.0.0.1:8080/movies/1 ```
 
@@ -204,6 +214,7 @@ Sample ```curl -X DELETE http://127.0.0.1:8080/movies/1 ```
 General:
 - Add a new actor 
 - Returns the actor info, success value
+- Authorized Roles: Casting Director,Executive Producer.
 
 Sample: ```curl http://127.0.0.1:8080/actors/new -X POST -H "Content-Type: application/json" -d '{"name": "Angelina","age": 45,"gender": "female", "image_link": "http:/image/Angelina_Jolie/1", "bio": "Angelina Jolie is an American actress, filmmaker, and humanitarian. The recipient of numerous accolades, including an Academy Award and three Golden Globe Awards."}'```
 
@@ -230,6 +241,7 @@ Sample: ```curl http://127.0.0.1:8080/actors/new -X POST -H "Content-Type: appli
 General:
 - Add a new movie 
 - Returns the movie info, success value
+- Authorized Role: Executive Producer.
 
 Sample: ```curl http://127.0.0.1:8080/movies/new -X POST -H "Content-Type: application/json" -d '{"title": "Frozen I","release_date": "2013-11-19 00:00:00","description": "Anna sets out on a journey with an iceman, Kristoff, and his reindeer, Sven, in order to find her sister, Elsa, who has the power to convert any object or person into ice.","director": "Jennifer Lee,", "category": ["Drama"],"image_link": "http:/image/frozen/1"}'```
 
@@ -260,6 +272,7 @@ Sample: ```curl http://127.0.0.1:8080/movies/new -X POST -H "Content-Type: appli
 General:
 - edit actor info 
 - Returns the actor info, success value and message
+- Authorized Roles: Casting Director,Executive Producer.
 
 
 Sample``` curl http://127.0.0.1:8080/actors/1 -X PATCH -H "Content-Type: application/json" -d '{"name": "Angelina Jolie"}'``` 
@@ -287,6 +300,7 @@ Sample``` curl http://127.0.0.1:8080/actors/1 -X PATCH -H "Content-Type: applica
 General:
 - edit movie info 
 - Returns the movie info, success value and message
+- Authorized Roles: Casting Director,Executive Producer.
 
 
 Sample``` curl http://127.0.0.1:8080/movies/1 -X PATCH -H "Content-Type: application/json" -d '{"title": "Frozen II","release_date":"2019-11-19 00:00:00"}'``` 
