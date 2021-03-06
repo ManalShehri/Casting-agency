@@ -4,9 +4,9 @@ The Casting Agency is th Udacity capstone project which models company that is r
 
 Role  | Access permission
 ------------- | -------------
-Casting Assistant  | - view actors and movies 
-Casting Director  | - All permissions a Casting Assistant has and… - Add or delete an actor from the database - Modify actors or movies
-Executive Producer  | - All permissions a Casting Director has and… -Add or delete a movie from the database
+Casting Assistant  | view actors and movies 
+Casting Director  | All permissions a Casting Assistant has + Add or delete an actor & Modify actors or movies
+Executive Producer  | All permissions a Casting Director has + Add or delete a movie
 
 
 ## Getting Started 
