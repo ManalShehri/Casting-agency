@@ -1,8 +1,11 @@
-# DB Var
+# dev DB 
 export DB_HOST='localhost:5432'
 export DB_USER='postgres'
 export DB_PASSWORD='215018'
 export DB_NAME='casting_agency'
+
+# prod DB 
+DATABASE_URL = 'postgres://gcgakystyzhpts:b085619d140ac99dfd66215f45d5f7e6e3add43dc804df884bc1c4d0c70b97e5@ec2-176-34-222-188.eu-west-1.compute.amazonaws.com:5432/dbq28o1pliuku2'
 
 # Auth Var
 export AUTH0_DOMAIN='dev-nxgju0wb.eu.auth0.com' 

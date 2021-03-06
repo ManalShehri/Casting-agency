@@ -12,10 +12,12 @@ DB_NAME = os.environ.get('DB_NAME')
 database_path = "postgres://{}:{}@{}/{}".format(
     DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
 
+# env is production
+DATABASE_URL = os.environ.get('DATABASE_URL')
 db = SQLAlchemy()
 
 
-def setup_db(app, database_path=database_path):
+def setup_db(app, database_path=DATABASE_URL):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
