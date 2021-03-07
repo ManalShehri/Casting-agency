@@ -9,6 +9,7 @@ from models import *
 CASTING_ASSISTANT_TOKEN = os.environ.get('CASTING_ASSISTANT_TOKEN')
 CASTING_DIRECTOR_TOKEN = os.environ.get('CASTING_DIRECTOR_TOKEN')
 EXECUTIVE_PRODUCER_TOKEN = os.environ.get('EXECUTIVE_PRODUCER_TOKEN')
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 
 class CastingAgencyTestCase(unittest.TestCase):
@@ -17,14 +18,14 @@ class CastingAgencyTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_name = "casting_agency"
-        self.DB_HOST = os.getenv('DB_HOST', 'localhost:5432')
-        self.DB_USER = os.getenv('DB_USER', 'manal')
-        self.DB_PASSWORD = os.getenv('DB_PASSWORD', '123456m')
-        self.DB_NAME = os.getenv('DB_NAME', 'casting_agency')
-        self.database_path = "postgres://{}:{}@{}/{}".format(
+        self.DB_HOST = os.environ.get('DB_HOST')
+        self.DB_USER = os.environ.get('DB_USER')
+        self.DB_PASSWORD = os.environ.get('DB_PASSWORD')
+        self.DB_NAME = os.environ.get('DB_NAME')
+        self.database_path_dev = "postgres://{}:{}@{}/{}".format(
             self.DB_USER, self.DB_PASSWORD, self.DB_HOST, self.DB_NAME)
-        setup_db(self.app, self.database_path)
+        self.database_path_prod = DATABASE_URL
+        setup_db(self.app, self.database_path_prod)
 
         # binds the app to the current context
         with self.app.app_context():
