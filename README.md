@@ -33,6 +33,11 @@ source env/Scripts/activate
 then run ``` pip install -r requirements.txt ``` All required packages are included in the requirements file.
 
 
+To export the credentials as environment variable including DB variables, tokens and ENV
+```
+source setup.sh
+```
+
 To run the application run the following commands:
 
 ```

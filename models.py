@@ -8,12 +8,14 @@ DB_HOST = os.environ.get('DB_HOST')
 DB_USER = os.environ.get('DB_USER')
 DB_PASSWORD = os.environ.get('DB_PASSWORD')
 DB_NAME = os.environ.get('DB_NAME')
+ENV = os.environ.get('ENV')
 
-database_path = "postgres://{}:{}@{}/{}".format(
-    DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
-
-# env is production
-DATABASE_URL = os.environ.get('DATABASE_URL')
+if ENV == 'dev':
+    DATABASE_URL = "postgres://{}:{}@{}/{}".format(
+        DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
+else: 
+    # env is production
+    DATABASE_URL = os.environ.get('DATABASE_URL')
 db = SQLAlchemy()
 
 
