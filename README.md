@@ -8,6 +8,21 @@ Casting Assistant  | view actors and movies
 Casting Director  | All permissions a Casting Assistant has + Add or delete an actor & Modify actors or movies
 Executive Producer  | All permissions a Casting Director has + Add or delete a movie
 
+## Motivation 
+
+This is my capstone project for the Udacity Full-Stack Nanodegree which summarize all what I have learned through the course of this nanodegree including 
+
+- Coding in Python 3
+- Relational Database Architecture
+- Modeling Data Objects with SQLAlchemy
+- Internet Protocols and Communication
+- Developing a Flask API
+- Authentication and Access
+- Authentication with Auth0
+- Authentication in Flask
+- Role-Based Access Control (RBAC)
+- Testing Flask Applications
+- Deploying Application
 
 ## Getting Started 
 
